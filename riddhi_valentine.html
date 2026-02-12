@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Riddhi — Will You Be My Valentine?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff6f8;--card:#fff;--accent:#ff4d7e;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; margin:0; background:linear-gradient(180deg,#fff 0%, #fff6f8 100%); color:#111}
+    .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+    .card{background:var(--card);border-radius:20px;box-shadow:0 10px 30px rgba(16,24,40,0.08);max-width:820px;width:100%;padding:36px;text-align:center;position:relative}
+
+    h1{margin:0 0 12px;font-size:28px}
+    p.lead{margin:0 0 24px;color:var(--muted)}
+
+    .btn-row{display:flex;gap:18px;justify-content:center;align-items:center}
+    .btn{padding:14px 28px;border-radius:999px;border:0;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 6px 18px rgba(16,24,40,0.08);transition:transform .18s ease, box-shadow .18s ease}
+    .btn:active{transform:translateY(1px)}
+
+    #yesBtn{background:linear-gradient(90deg,var(--accent),#ff7aa9);color:white}
+    #noBtn{background:#f3f4f6;color:#111;position:absolute;left:50%;transform:translate(-50%,0);top:calc(50% + 24px);}
+
+    /* make the container for the buttons taller so the no button can move around */
+    .center-pitch{height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+
+    /* letters page */
+    .letters{display:none;padding-top:12px}
+    .letters-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    .letter{background:linear-gradient(180deg,#fff,#fff0f3);border-radius:12px;padding:18px;cursor:pointer;box-shadow:0 6px 18px rgba(16,24,40,0.06);transition:transform .18s ease}
+    .letter:hover{transform:translateY(-6px)}
+    .envelope{font-weight:900;font-size:18px;color:var(--accent)}
+    .letter img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-top:12px}
+    .promise{margin-top:12px;color:var(--muted);min-height:56px}
+
+    .back{position:absolute;top:18px;left:18px;background:transparent;border:0;font-weight:700;color:var(--muted);cursor:pointer}
+
+    /* modal for expanded letter */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:flex;align-items:center;justify-content:center;z-index:40;opacity:0;pointer-events:none;transition:opacity .18s ease}
+    .modal.show{opacity:1;pointer-events:all}
+    .modal-card{background:var(--card);padding:24px;border-radius:14px;max-width:720px;width:94%;box-shadow:0 18px 40px rgba(16,24,40,0.45)}
+    .modal-card img{width:100%;height:320px;object-fit:cover;border-radius:8px}
+    .modal-card p{margin-top:12px}
+
+    /* confetti styles */
+    .confetti-piece{position:fixed;z-index:50;top:-10px;left:50%;width:8px;height:12px;opacity:.95;border-radius:2px;animation:fall 1200ms linear forwards}
+    @keyframes fall{to{transform:translateY(110vh) rotate(540deg);opacity:1}}
+
+    @media (max-width:720px){
+      .letters-grid{grid-template-columns:1fr}
+      .center-pitch{height:260px}
+      #noBtn{top:auto;bottom:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="page1">
+      <button class="back" id="dummyBack" style="display:none">&larr; Back</button>
+      <h1>Riddhi — will you be my Valentine?</h1>
+      <p class="lead">I made this little page just for you. Choose your answer below 💌</p>
+
+      <div class="center-pitch">
+        <button id="yesBtn" class="btn">Yes, of course! 💘</button>
+        <button id="noBtn" class="btn">Nope</button>
+      </div>
+      <p style="margin-top:18px;color:var(--muted);font-size:13px">(Tip: try to click No if you can...)</p>
+    </div>
+
+    <div class="card letters" id="page2" aria-hidden="true">
+      <button class="back" id="backBtn">&larr; Back</button>
+      <h1>Three Letters for Riddhi</h1>
+      <p class="lead">Click any letter to open it. Replace the placeholder images and promises with your real content.</p>
+
+      <div class="letters-grid">
+        <div class="letter" data-index="1">
+          <div class="envelope">Letter I</div>
+          <img src="https://via.placeholder.com/600x360?text=Image+1" alt="Image placeholder 1">
+          <div class="promise">Promise 1: <em>[Write your promise here]</em></div>
+        </div>
+
+        <div class="letter" data-index="2">
+          <div class="envelope">Letter II</div>
+          <img src="https://via.placeholder.com/600x360?text=Image+2" alt="Image placeholder 2">
+          <div class="promise">Promise 2: <em>[Write your promise here]</em></div>
+        </div>
+
+        <div class="letter" data-index="3">
+          <div class="envelope">Letter III</div>
+          <img src="https://via.placeholder.com/600x360?text=Image+3" alt="Image placeholder 3">
+          <div class="promise">Promise 3: <em>[Write your promise here]</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for opened letter -->
+  <div class="modal" id="modal">
+    <div class="modal-card" id="modalCard">
+      <h3 id="modalTitle">Letter</h3>
+      <img id="modalImg" src="https://via.placeholder.com/800x480?text=Image" alt="Letter image">
+      <p id="modalPromise">Promise placeholder. Replace this with your real promise text. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <div style="text-align:right;margin-top:12px"><button id="closeModal" class="btn" style="background:#f3f4f6;color:#111">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const backBtn = document.getElementById('backBtn');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPromise = document.getElementById('modalPromise');
+    const closeModal = document.getElementById('closeModal');
+    const letters = document.querySelectorAll('.letter');
+
+    // Prevent clicking "No" by making it dodge on hover/touch/click/keyboard
+    function moveNoButton() {
+      const container = page1.getBoundingClientRect();
+      const btn = noBtn.getBoundingClientRect();
+      const padding = 16; // keep some distance from edges
+
+      // compute available area inside the card for button center
+      const areaWidth = container.width - btn.width - padding*2;
+      const areaHeight = container.height - btn.height - padding*2;
+
+      // random position within that area
+      const randX = Math.floor(Math.random() * Math.max(1, areaWidth));
+      const randY = Math.floor(Math.random() * Math.max(1, areaHeight));
+
+      // set position relative to card
+      noBtn.style.left = (padding + randX) + 'px';
+      noBtn.style.top = (padding + randY) + 'px';
+
+      // small transform for nicer movement
+      noBtn.style.transform = 'translate(0,0)';
+    }
+
+    // When the user tries to hover or touch the No button, move it
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', function(e){ e.preventDefault(); moveNoButton(); }, {passive:false});
+    noBtn.addEventListener('click', function(e){ e.preventDefault(); moveNoButton(); });
+    noBtn.addEventListener('focus', moveNoButton);
+    noBtn.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); moveNoButton(); } });
+
+    // Center the no button initially (after fonts load)
+    window.addEventListener('load', ()=>{
+      const cardRect = page1.getBoundingClientRect();
+      noBtn.style.left = (cardRect.width/2 - noBtn.offsetWidth/2) + 'px';
+      noBtn.style.top = (cardRect.height/2 + 24) + 'px';
+    });
+
+    // Yes button: show letters page and confetti
+    yesBtn.addEventListener('click', ()=>{
+      page1.style.display = 'none';
+      page2.style.display = 'block';
+      page2.setAttribute('aria-hidden','false');
+      launchConfetti();
+      // Scroll top to show page2 nicely on small screens
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+
+    backBtn.addEventListener('click', ()=>{
+      page2.style.display = 'none';
+      page1.style.display = 'block';
+      page2.setAttribute('aria-hidden','true');
+    });
+
+    // Letters open modal
+    letters.forEach(letter=>{
+      letter.addEventListener('click', ()=>{
+        const idx = letter.dataset.index;
+        const img = letter.querySelector('img').src;
+        const promise = letter.querySelector('.promise').innerHTML;
+        modalImg.src = img;
+        modalTitle.innerText = `Letter ${idx}`;
+        modalPromise.innerHTML = promise;
+        modal.classList.add('show');
+      });
+    });
+
+    closeModal.addEventListener('click', ()=>{ modal.classList.remove('show'); });
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('show'); });
+
+    // Small confetti generator
+    function launchConfetti(){
+      const colors = ['#ff4d7e','#ffd166','#06d6a0','#4d7bff','#ff7aa9'];
+      for(let i=0;i<28;i++){
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.background = colors[Math.floor(Math.random()*colors.length)];
+        c.style.left = Math.floor(Math.random()*100) + '%';
+        c.style.width = Math.floor(5 + Math.random()*10)+'px';
+        c.style.height = Math.floor(8 + Math.random()*18)+'px';
+        c.style.transform = `translateY(-10px) rotate(${Math.floor(Math.random()*360)}deg)`;
+        c.style.animationDuration = (900 + Math.random()*700) + 'ms';
+        document.body.appendChild(c);
+        // remove after animation
+        setTimeout(()=>{ c.remove(); }, 2500);
+      }
+    }
+
+    // Accessibility: make sure letters are keyboard reachable
+    letters.forEach(l => { l.tabIndex = 0; l.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); l.click(); } }); });
+
+  </script>
+</body>
+</html>
