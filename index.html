@@ -32,7 +32,7 @@
     .letter:hover{transform:translateY(-6px)}
     .envelope{font-weight:900;font-size:18px;color:var(--accent)}
     .letter img{width:100%;height:140px;object-fit:cover;border-radius:8px;margin-top:12px}
-    .promise{margin-top:12px;color:var(--muted);min-height:56px}
+    .promise{display:none}
 
     .back{position:absolute;top:18px;left:18px;background:transparent;border:0;font-weight:700;color:var(--muted);cursor:pointer}
 
@@ -71,24 +71,24 @@
     <div class="card letters" id="page2" aria-hidden="true">
       <button class="back" id="backBtn">&larr; Back</button>
       <h1>Three Letters for Riddhi</h1>
-      <p class="lead">Click any letter to open it. Replace the placeholder images and promises with your real content.</p>
+      <p class="lead">Click any letter to open it.</p>
 
       <div class="letters-grid">
         <div class="letter" data-index="1">
           <div class="envelope">Letter I</div>
-          <img src="images/letter_image.png" alt="Image placeholder 1">
+          <img src="letter_image.png" alt="Image placeholder 1">
           <div class="promise">Promise 1: <em>[Write your promise here]</em></div>
         </div>
 
         <div class="letter" data-index="2">
           <div class="envelope">Letter II</div>
-          <img src="images/letter_image.png" alt="Image placeholder 2">
+          <img src="letter_image.png" alt="Image placeholder 2">
           <div class="promise">Promise 2: <em>[Write your promise here]</em></div>
         </div>
 
         <div class="letter" data-index="3">
           <div class="envelope">Letter III</div>
-          <img src="images/letter_image.png" alt="Image placeholder 3">
+          <img src="letter_image.png" alt="Image placeholder 3">
           <div class="promise">Promise 3: <em>[Write your promise here]</em></div>
         </div>
       </div>
@@ -99,7 +99,7 @@
   <div class="modal" id="modal">
     <div class="modal-card" id="modalCard">
       <h3 id="modalTitle">Letter</h3>
-      <img id="modalImg" src="images/letter_image.png" alt="Letter image">
+      <img id="modalImg" src="https://via.placeholder.com/800x480?text=Image" alt="Letter image">
       <p id="modalPromise">Promise placeholder. Replace this with your real promise text. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       <div style="text-align:right;margin-top:12px"><button id="closeModal" class="btn" style="background:#f3f4f6;color:#111">Close</button></div>
     </div>
