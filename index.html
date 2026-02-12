@@ -70,26 +70,26 @@
 
     <div class="card letters" id="page2" aria-hidden="true">
       <button class="back" id="backBtn">&larr; Back</button>
-      <h1>Three Letters for Riddhi</h1>
+      <h1>Three Letters for you Angry Bird</h1>
       <p class="lead">Click any letter to open it.</p>
 
       <div class="letters-grid">
         <div class="letter" data-index="1">
           <div class="envelope">Letter I</div>
-          <img src="letter_image.png" alt="Image placeholder 1">
-          <div class="promise">Promise 1: <em>[Write your promise here]</em></div>
+          <img src="images/IMG_5088.JPG" alt="Letter 1" data-full="images/letter1.jpg">
+          <div class="promise">Promise 1: <em>I may not always say it loudly, but I’ll care for you in my own quiet way — by making sure you eat right, sleep enough, and take care of your body. Sorry for this image!</em></div>
         </div>
 
         <div class="letter" data-index="2">
           <div class="envelope">Letter II</div>
-          <img src="letter_image.png" alt="Image placeholder 2">
-          <div class="promise">Promise 2: <em>[Write your promise here]</em></div>
+          <img src="IMG_3016.JPG" alt="Letter 2" data-full="images/letter2.jpg">
+          <div class="promise">Promise 2: <em>That day was just the beginning, and I promise it won’t be the last of moments like that. I will keep making efforts to plan, to show up, to listen, and to understand you better with every passing day. I want to keep discovering new sides of you, building deeper conversations, and creating memories that feel even more special than the last. I promise to never let comfort turn into carelessness I will always try.</em></div>
         </div>
 
         <div class="letter" data-index="3">
           <div class="envelope">Letter III</div>
-          <img src="letter_image.png" alt="Image placeholder 3">
-          <div class="promise">Promise 3: <em>[Write your promise here]</em></div>
+          <img src="images/IMG_4982.JPG" alt="Letter 3" data-full="images/letter3.jpg">
+          <div class="promise">Promise 3: <em>There’s just one thing I hope from you — not a big promise, just honesty. When life gets tough or things feel confusing between us, don’t step away silently. Stay, talk to me, and we’ll handle it together. I will always try to understand you calmly and maturely, and I just hope you’ll keep choosing us the same way — even on difficult days, not only the easy ones.</em></div>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
   <div class="modal" id="modal">
     <div class="modal-card" id="modalCard">
       <h3 id="modalTitle">Letter</h3>
-      <img id="modalImg" src="https://via.placeholder.com/800x480?text=Image" alt="Letter image">
+      <img id="modalImg" src="images/letter_image.png" alt="Letter image">
       <p id="modalPromise">Promise placeholder. Replace this with your real promise text. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
       <div style="text-align:right;margin-top:12px"><button id="closeModal" class="btn" style="background:#f3f4f6;color:#111">Close</button></div>
     </div>
@@ -174,7 +174,7 @@
     letters.forEach(letter=>{
       letter.addEventListener('click', ()=>{
         const idx = letter.dataset.index;
-        const img = letter.querySelector('img').src;
+        const img = letter.querySelector('img').getAttribute('data-full');
         const promise = letter.querySelector('.promise').innerHTML;
         modalImg.src = img;
         modalTitle.innerText = `Letter ${idx}`;
